@@ -19,16 +19,19 @@ class Movement
     array[index - 1], array[index] = array[index], array[index - 1]
     View.print_square(array)
   end
+
   def self.up(array)
     index = array.index(" ")
     array[index - 3], array[index] = array[index], array[index - 3]
     View.print_square(array)
   end
+
   def self.down(array)
     index = array.index(" ")
     array[index - 6], array[index] = array[index], array[index - 6]
     View.print_square(array)
   end
+  
 end
 class View
   def self.print_square(array)
@@ -83,5 +86,8 @@ while (move != "\e")
     when "\e"
       puts "ESCAPE"
       break
+  end
+  if array == [1, 2, 3, 4, 5, 6, 7, 8," "]
+    puts "Felicitaciones"
   end
 end
