@@ -10,35 +10,42 @@ end
 class Movement
   def self.right(array)
     index = array.index(" ")
-    puts index
-    if index == 8
-      puts array.inspect
-      array[0], array[8] = array[8], array[0]
-      puts array.inspect
-    else
-      puts array.inspect
-      array[index + 1], array[index] = array[index], array[index + 1]
-      puts array.inspect
-    end
+    array[index - 8], array[index] = array[index], array[index -8]
+    View.print_square(array)
   end
+
   def self.left(array)
     index = array.index(" ")
-    puts index
-    puts array.inspect
     array[index - 1], array[index] = array[index], array[index - 1]
-    puts array.inspect
-    # if index == 0
-    #   puts array.inspect
-    #   array[8], array[0] = array[0], array[8]
-    #   puts array.inspect
-    # else
-    #   puts array.inspect
-    #   array[index - 1], array[index] = array[index], array[index - 1]
-    #   puts array.inspect
-    # end
+    View.print_square(array)
+  end
+  def self.up(array)
+    index = array.index(" ")
+    array[index - 3], array[index] = array[index], array[index - 3]
+    View.print_square(array)
+  end
+  def self.down(array)
+    index = array.index(" ")
+    array[index - 6], array[index] = array[index], array[index - 6]
+    View.print_square(array)
   end
 end
-
+class View
+  def self.print_square(array)
+    puts"""
+    _ _ _ _ _ _ _ _ _ _ _
+    |      |       |      |
+    |  #{array[0]}   |  #{array[1]}    |  #{array[2]}   |
+    |_ _ _ |_ _ _ _| _ _ _|
+    |      |       |      |
+    |  #{array[3]}   |  #{array[4]}    |  #{array[5]}   |
+    |_ _ _ |_ _ _ _| _ _ _|
+    |      |       |      |
+    |  #{array[6]}   |  #{array[7]}    |  #{array[8]}   |
+    |_ _ _ |_ _ _ _| _ _ _|
+    """
+  end
+end
 # Reads keypresses from the user including 2 and 3 escape character sequences.
 def read_char
   STDIN.echo = false
@@ -57,16 +64,24 @@ ensure
 end
 
 array = Game.generate_puzzle
-move = read_char
-case move
-  when "\e[A"
-    puts "UP ARROW"
-  when "\e[B"
-    puts "DOWN ARROW"
-  when "\e[C"
-    puts "RIGHT ARROW"
-    Movement.right(array)
-  when "\e[D"
-    puts "LEFT ARROW"
-    Movement.left([4, " ", 6, 8, 3, 2, 1, 7, 5])
+move = ""
+while (move != "\e")
+  move = read_char
+  case move
+    when "\e[A"
+      puts "UP ARROW"
+      Movement.up(array)
+    when "\e[B"
+      puts "DOWN ARROW"
+      Movement.down(array)
+    when "\e[C"
+      puts "RIGHT ARROW"
+      Movement.right(array)
+    when "\e[D"
+      puts "LEFT ARROW"
+      Movement.left(array)
+    when "\e"
+      puts "ESCAPE"
+      break
+  end
 end
